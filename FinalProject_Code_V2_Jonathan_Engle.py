@@ -22,12 +22,14 @@ c = CustomerInfo.cursor()
   
 
 # Create table
+'''
 c.execute( """CREATE TABLE Customer (
+
 		PartyName text,
 		PartySize integer,
 		PhoneNumber integer
 		)""")
-
+'''
 
 
 #Creates the Customer facing portion of the progrm
@@ -39,12 +41,12 @@ def Waitlist():
 
     #Allows for customers to submit their information
     def submit():
-        # Create a database or connect to one
+        #Connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
-        # Create cursor
+        #Create cursor
         c = CustomerInfo.cursor()
 
-        # Insert Into Table
+        #Inserts values into table
         c.execute("INSERT INTO Customer VALUES (:Party_name, :Party_Size, :Phone_Number)",
                 {
                     'Party_name': Party_name.get(),
@@ -57,27 +59,27 @@ def Waitlist():
         #Commit Changes
         CustomerInfo.commit()
 
-        # Close Connection 
+        #Close Connection 
         CustomerInfo.close()
 
-        # Clear The Text Boxes
+        #Clears the text boxes
         Party_name.delete(0, END)
         Party_Size.delete(0, END)
         Phone_Number.delete(0, END)
 
     #Shows the current people in the wait list
     def query():
-        # Create a database or connect to one
+        #Connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
-        # Create cursor
+        #Create cursor
         c = CustomerInfo.cursor()
 
-        # Query the database
+        #Query the database
         c.execute("SELECT *, oid FROM Customer")
         records = c.fetchall()
         # print(records)
 
-        # Loop Thru Results
+        #Goes through results
         print_records = ''
         for record in records:
             print_records += str(record[0]) + " " + str(record[1]) + " " + "\t" +str(record[3]) + "\n"
@@ -90,7 +92,7 @@ def Waitlist():
         CustomerInfo.commit()
 
 
-    # Create Text Boxes
+    #Create entry boxes
     Party_name = Entry(root, width=30)
     Party_name.grid(row=0, column=1, padx=20, pady=(10, 0))
     Party_Size = Entry(root, width=30)
@@ -98,7 +100,7 @@ def Waitlist():
     Phone_Number = Entry(root, width=30)
     Phone_Number.grid(row=2, column=1)
 
-    # Create Text Box Labels
+    #Create labes
     Party_name_label = Label(root, text="Please enter your party name: ")
     Party_name_label.grid(row=0, column=0, pady=(10, 0))
     Party_Size_label = Label(root, text="Please enter the number of people in your party: ")
@@ -106,11 +108,9 @@ def Waitlist():
     Phone_Number_label = Label(root, text="Please enter a phone number that we can contact you at")
     Phone_Number_label.grid(row=2, column=0)
 
-    # Create Submit Button
+    # Create buttons
     submit_btn = Button(root, text="Submit", command=submit)
     submit_btn.grid(row=6, column=0, columnspan=2, pady=10, padx=10, ipadx=100)
-
-    # Create a Query Button
     query_btn = Button(root, text="Show List", command=query)
     query_btn.grid(row=7, column=0, columnspan=2, pady=10, padx=10, ipadx=137)
 
@@ -131,7 +131,7 @@ def Staff():
 
     #Allows for the database information to be updated by the edit command
     def update():
-        # Create a database or connect to one
+        #connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
         # Create cursor
         c = CustomerInfo.cursor()
@@ -155,10 +155,10 @@ def Staff():
             })
 
 
-        #Commit changes to the datavase
+        #Commit changes to the database
         CustomerInfo.commit()
 
-        # Close connection to the database
+        #Close connection to the database
         CustomerInfo.close()
 
         root.destroy()
@@ -167,18 +167,18 @@ def Staff():
     #Allows for Database results to be shown
     def query():
 
-        # Create a database or connect to one
+        #Connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
 
-        # Create cursor
+        #Create cursor
         c = CustomerInfo.cursor()
   
-        # Query the database
+        #Query the database
         c.execute("SELECT *, oid FROM Customer")
         records = c.fetchall()
 
 
-        # Loop Thru Results
+        #Goes through results
         print_records = ''
         for record in records:
             print_records += str(record[0]) + " " + str(record[1]) + " " + "\t" +str(record[3]) + "\n"
@@ -198,16 +198,16 @@ def Staff():
         root.title("Customer Correction")
         root.geometry("800x600")
 
-        # Create a database or connect to one
+        #Connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
 
-        # Create cursor
+        #Create cursor
         c = CustomerInfo.cursor()
 
         #retrieve the value entered in the entry box
         record_id = delete_box.get()
 
-        # Query the database
+        #Query the database
         c.execute("SELECT * FROM Customer WHERE oid = " + record_id)
         records = c.fetchall()
         
@@ -217,7 +217,7 @@ def Staff():
         global Phone_Number_editor
         
 
-        # Create Text Boxes
+        #Creates entry boxers
         Party_name_editor = Entry(root, width=30)
         Party_name_editor.grid(row=0, column=1, padx=20, pady=(10, 0))
         Party_Size_editor = Entry(root, width=30)
@@ -226,7 +226,7 @@ def Staff():
         Phone_Number_editor.grid(row=2, column=1)
         
         
-        # Create Text Box Labels
+        #Creates labels
         Party_name_label = Label(root, text="Please enter your party's name: ")
         Party_name_label.grid(row=0, column=0, pady=(10, 0))
         Party_Size_label = Label(root, text="Please enter how many people are in your party: ")
@@ -236,7 +236,7 @@ def Staff():
         
         
 
-        # Loop thru results
+        #Goes through results
         for record in records:
             Party_name_editor.insert(0, record[0])
             Party_Size_editor.insert(0, record[1])
@@ -244,20 +244,20 @@ def Staff():
 
 
         
-        # Create a Save Button To Save edited record
+        # Creates button to save entries in table
         edit_btn = Button(root, text="Save Record", command=update)
         edit_btn.grid(row=6, column=0, columnspan=2, pady=10, padx=10, ipadx=145)
 
     #Gives the program the ability to delete an entry on the table
     def delete():
 
-        # connect to created database
+        #Connects to the database
         CustomerInfo = sqlite3.connect('Customer_book.db')
 
-        # Create cursor
+        #Create cursor
         c = CustomerInfo.cursor()
 
-        # Delete a record
+        #Delete a record
         c.execute("DELETE from Customer WHERE oid = " + delete_box.get())
 
         delete_box.delete(0, END)
@@ -288,12 +288,12 @@ def Staff():
 
         #add a confirmation check before clearing all data
         if CLEAR == "y" or "yes":
-            # connect to created database
+            #Connects to the database
             CustomerInfo = sqlite3.connect('Customer_book.db')
-            # Create cursor
+            #Create cursor
             c = CustomerInfo.cursor()
 
-            # Delete a record
+            #Delete a record
             c.execute("DELETE from Customer WHERE oid = *")
 
             delete_box.delete(0, END)
@@ -336,10 +336,10 @@ def Staff():
 
 
 
-#Create Database
+#Connects to the database
 CustomerInfo = sqlite3.connect('Customer_book.db')
 
-# Create cursor
+#Create cursor
 c = CustomerInfo.cursor()
 
 #Selects all values from database
